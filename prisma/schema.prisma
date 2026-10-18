@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  name     String
+  password String
+  beans    Bean[]
+  createdAt DateTime @default(now())
+}
+
+model Bean {
+  id        String   @id @default(cuid())
+  name      String
+  origin    String
+  roaster   String?
+  roast     String   // LIGHT | MEDIUM | DARK
+  process   String?
+  weightG   Int      // น้ำหนักที่ซื้อ
+  remainingG Int     // น้ำหนักคงเหลือ
+  price     Float
+  roastDate DateTime?
+  notes     String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs      BeanLog[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([userId])
+}
+
+model BeanLog {
+  id      String   @id @default(cuid())
+  beanId  String
+  bean    Bean     @relation(fields: [beanId], references: [id], onDelete: Cascade)
+  usedG   Int
+  method  String
+  rating  Int?
+  note    String?
+  createdAt DateTime @default(now())
+  @@index([beanId])
+}

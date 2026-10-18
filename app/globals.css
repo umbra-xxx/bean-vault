@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body { @apply bg-mist text-ink antialiased; }
+.input { @apply w-full rounded-md border border-ink/20 bg-white px-3 py-2 text-sm outline-none focus:border-moss focus:ring-2 focus:ring-moss/30; }
+.btn { @apply rounded-md bg-moss px-4 py-2 text-sm font-medium text-white hover:bg-ink focus-visible:ring-2 focus-visible:ring-moss/50 disabled:opacity-50; }
+.btn-ghost { @apply rounded-md border border-ink/20 px-3 py-1.5 text-sm hover:bg-ink/5; }
+.err { @apply mt-1 text-xs text-red-700; }
