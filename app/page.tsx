@@ -33,43 +33,79 @@ export default function Home() {
   async function logout() { await fetch("/api/auth/logout", { method: "POST" }); router.replace("/login"); }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Bean Vault</h1>
-        <div className="flex gap-2"><button className="btn" onClick={() => setEditing({ roast: "MEDIUM" })}>เพิ่มเมล็ดกาแฟ</button>
-          <button className="btn-ghost" onClick={logout}>ออกจากระบบ</button></div>
+    <main className="mx-auto max-w-6xl px-4 py-5 sm:px-6 sm:py-8">
+      <header className="mb-6 flex items-center justify-between">
+        <a href="/" className="flex items-center gap-3" aria-label="Bean Vault หน้าคลังเมล็ดกาแฟ">
+          <span className="grid h-11 w-11 place-items-center rounded-2xl bg-moss text-xl text-white shadow-sm">☕</span>
+          <span><span className="block text-lg font-bold leading-tight tracking-tight">Bean Vault</span><span className="text-xs text-ink/55">คลังเมล็ดกาแฟของคุณ</span></span>
+        </a>
+        <div className="flex gap-2"><button className="btn" onClick={() => setEditing({ roast: "MEDIUM" })}><span className="mr-1">＋</span>เพิ่มเมล็ดกาแฟ</button>
+          <button className="btn-ghost hidden sm:block" onClick={logout}>ออกจากระบบ</button>
+          <button className="btn-ghost px-2 sm:hidden" onClick={logout} aria-label="ออกจากระบบ">↗</button></div>
       </header>
 
-      <div className="mt-6 grid gap-2 sm:grid-cols-[1fr_auto_auto_auto]">
-        <input className="input" placeholder="ค้นหาชื่อ แหล่งปลูก โรงคั่ว โน้ต…" value={q} onChange={(e) => setQ(e.target.value)} />
-        <select className="input" value={roast} onChange={(e) => setRoast(e.target.value)}>
-          <option value="">ทุกระดับการคั่ว</option>{Object.entries(ROAST).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
-        <select className="input" value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="createdAt">ล่าสุด</option><option value="name">ชื่อ</option><option value="price">ราคา</option><option value="remainingG">คงเหลือ</option></select>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} />มีของเหลือ</label>
-      </div>
+      <section className="forest-hero relative isolate overflow-hidden rounded-[1.75rem] px-6 py-8 text-white shadow-lg sm:px-10 sm:py-11">
+        <div className="relative z-[1] max-w-xl">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[.22em] text-white/70">Your little coffee forest</p>
+          <h1 className="text-3xl font-bold leading-tight sm:text-4xl">เมล็ดดี ๆ เติบโต<br className="sm:hidden" />ในทุกแก้ว</h1>
+          <p className="mt-3 max-w-md text-sm leading-6 text-white/75">เก็บเรื่องราวของเมล็ดกาแฟจากทั่วโลก พร้อมบันทึกทุกแก้วโปรดของคุณ</p>
+        </div>
+        <span className="absolute bottom-5 right-7 hidden text-7xl opacity-20 sm:block" aria-hidden="true">🌿</span>
+      </section>
+
+      <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="rounded-2xl border border-ink/5 bg-white/80 p-4 shadow-sm sm:p-5">
+          <p className="text-xs font-medium text-ink/55">รายการที่พบ</p><p className="mt-1 text-2xl font-bold">{beans.length}<span className="ml-1 text-sm font-medium text-ink/50">รายการ</span></p>
+        </div>
+        <div className="rounded-2xl border border-ink/5 bg-white/80 p-4 shadow-sm sm:p-5">
+          <p className="text-xs font-medium text-ink/55">เมล็ดที่ยังมี</p><p className="mt-1 text-2xl font-bold">{beans.filter((b) => b.remainingG > 0).length}<span className="ml-1 text-sm font-medium text-ink/50">รายการ</span></p>
+        </div>
+        <div className="col-span-2 rounded-2xl border border-ink/5 bg-white/80 p-4 shadow-sm sm:col-span-1 sm:p-5">
+          <p className="text-xs font-medium text-ink/55">กาแฟพร้อมชง</p><p className="mt-1 text-2xl font-bold">{beans.reduce((sum, b) => sum + b.remainingG, 0).toLocaleString()}<span className="ml-1 text-sm font-medium text-ink/50">กรัม</span></p>
+        </div>
+      </section>
+
+      <section className="mt-7 rounded-2xl border border-ink/5 bg-white/65 p-4 shadow-sm sm:p-5">
+        <div className="mb-3 flex items-center gap-2"><span className="text-roast">⌕</span><h2 className="text-sm font-bold">ค้นหาเมล็ดกาแฟ</h2></div>
+        <div className="grid gap-2 sm:grid-cols-[1fr_auto_auto_auto]">
+          <input className="input" placeholder="ค้นหาชื่อ แหล่งปลูก โรงคั่ว โน้ต…" value={q} onChange={(e) => setQ(e.target.value)} />
+          <select className="input sm:w-48" value={roast} onChange={(e) => setRoast(e.target.value)}>
+            <option value="">ทุกระดับการคั่ว</option>{Object.entries(ROAST).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
+          <select className="input sm:w-36" value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="createdAt">ล่าสุด</option><option value="name">ชื่อ</option><option value="price">ราคา</option><option value="remainingG">คงเหลือ</option></select>
+          <label className="flex min-h-11 items-center gap-2 px-1 text-sm text-ink/75"><input className="accent-moss" type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} />มีของเหลือ</label>
+        </div>
+      </section>
 
       {beans.length === 0 ? (
-        <p className="mt-16 text-center text-ink/60">ยังไม่พบเมล็ดกาแฟ ลองเพิ่มถุงแรกของคุณ หรือเปลี่ยนคำค้นหา</p>
+        <div className="mt-6 rounded-2xl border border-dashed border-ink/20 bg-white/50 px-5 py-14 text-center">
+          <span className="text-4xl" aria-hidden="true">🫘</span>
+          <p className="mt-3 font-semibold">ยังไม่พบเมล็ดกาแฟ</p>
+          <p className="mt-1 text-sm text-ink/60">ลองเพิ่มถุงแรกของคุณ หรือเปลี่ยนคำค้นหา</p>
+          <button className="btn mt-5" onClick={() => setEditing({ roast: "MEDIUM" })}>เพิ่มเมล็ดกาแฟ</button>
+        </div>
       ) : (
-        <ul className="mt-6 divide-y divide-ink/10 rounded-lg border border-ink/10 bg-white">
+        <ul className="mt-5 grid gap-3 md:grid-cols-2">
           {beans.map((b) => {
-            const pct = Math.round((b.remainingG / b.weightG) * 100);
+            const pct = Math.max(0, Math.min(100, Math.round((b.remainingG / b.weightG) * 100)));
             return (
-              <li key={b.id} className="grid gap-3 p-4 sm:grid-cols-[1fr_180px_auto] sm:items-center">
-                <div>
-                  <p className="font-medium">{b.name}</p>
-                  <p className="text-sm text-ink/70">{b.origin}{b.roaster && ` · ${b.roaster}`} · {ROAST[b.roast]}{b.process && ` · ${b.process}`}</p>
-                  {b.notes && <p className="mt-1 text-sm text-ink/60">{b.notes}</p>}
+              <li key={b.id} className="rounded-2xl border border-ink/5 bg-white/90 p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-5">
+                <div className="flex items-start gap-3">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-leaf/70 text-lg" aria-hidden="true">🫘</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2"><p className="font-bold">{b.name}</p><span className="rounded-full bg-roast/10 px-2.5 py-1 text-[11px] font-semibold text-roast">{ROAST[b.roast]}</span></div>
+                    <p className="mt-1 text-sm text-ink/65">{b.origin}{b.roaster && ` · ${b.roaster}`}{b.process && ` · ${b.process}`}</p>
+                    {b.notes && <p className="mt-2 line-clamp-2 text-sm text-ink/55">{b.notes}</p>}
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm">{b.remainingG}/{b.weightG} g · ฿{b.price.toLocaleString()}</p>
-                  <div className="mt-1 h-1.5 rounded bg-ink/10"><div className="h-full rounded bg-moss" style={{ width: `${pct}%` }} /></div>
+                <div className="mt-5">
+                  <div className="flex justify-between text-xs"><span className="font-medium">{b.remainingG.toLocaleString()} / {b.weightG.toLocaleString()} g</span><span className="text-ink/55">฿{b.price.toLocaleString()}</span></div>
+                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-ink/10"><div className="h-full rounded-full bg-moss transition-all" style={{ width: `${pct}%` }} /></div>
                 </div>
-                <div className="flex gap-2">
+                <div className="mt-4 flex gap-2 border-t border-ink/5 pt-3">
                   <button className="btn-ghost" onClick={() => setLogFor(b)}>ประวัติ</button>
                   <button className="btn-ghost" onClick={() => setEditing(b)}>แก้ไข</button>
-                  <button className="btn-ghost text-red-700" onClick={() => remove(b)}>ลบ</button>
+                  <button className="btn-ghost ml-auto text-red-700 hover:border-red-200 hover:bg-red-50" onClick={() => remove(b)}>ลบ</button>
                 </div>
               </li>
             );
@@ -85,8 +121,8 @@ export default function Home() {
 function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   return (
     <div className="fixed inset-0 z-10 grid place-items-center bg-ink/40 p-4" onClick={onClose}>
-      <div className="max-h-[90vh] w-full max-w-lg overflow-auto rounded-lg bg-white p-5" onClick={(e) => e.stopPropagation()}>
-        <div className="mb-4 flex justify-between"><h2 className="text-lg font-bold">{title}</h2><button onClick={onClose} aria-label="ปิด">✕</button></div>
+      <div className="max-h-[90vh] w-full max-w-lg overflow-auto rounded-2xl border border-ink/5 bg-cream p-5 shadow-xl sm:p-6" onClick={(e) => e.stopPropagation()}>
+        <div className="mb-4 flex items-center justify-between"><h2 className="text-lg font-bold">{title}</h2><button className="grid h-9 w-9 place-items-center rounded-xl text-ink/60 transition hover:bg-ink/5 hover:text-ink" onClick={onClose} aria-label="ปิด">✕</button></div>
         {children}
       </div>
     </div>

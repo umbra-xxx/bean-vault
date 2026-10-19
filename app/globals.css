@@ -1,8 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body { @apply bg-mist text-ink antialiased; }
-.input { @apply w-full rounded-md border border-ink/20 bg-white px-3 py-2 text-sm outline-none focus:border-moss focus:ring-2 focus:ring-moss/30; }
-.btn { @apply rounded-md bg-moss px-4 py-2 text-sm font-medium text-white hover:bg-ink focus-visible:ring-2 focus-visible:ring-moss/50 disabled:opacity-50; }
-.btn-ghost { @apply rounded-md border border-ink/20 px-3 py-1.5 text-sm hover:bg-ink/5; }
+body { @apply bg-mist text-ink antialiased; background-image: radial-gradient(ellipse at 10% 0%, rgba(220,231,217,.7), transparent 34rem); }
+button, input, select, textarea { font: inherit; }
+.input { @apply w-full rounded-xl border border-ink/15 bg-white/90 px-3.5 py-2.5 text-sm outline-none transition placeholder:text-ink/40 focus:border-moss focus:ring-2 focus:ring-moss/20; }
+.btn { @apply rounded-xl bg-moss px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50 focus-visible:ring-offset-2 disabled:opacity-50; }
+.btn-ghost { @apply rounded-xl border border-ink/15 bg-white/60 px-3 py-2 text-sm font-medium transition hover:border-moss/30 hover:bg-leaf/50; }
 .err { @apply mt-1 text-xs text-red-700; }
+.forest-hero { background: linear-gradient(112deg, rgba(25,53,39,.97), rgba(49,91,69,.93) 56%, rgba(84,111,75,.88)), radial-gradient(ellipse at 88% 8%, rgba(221,197,146,.35), transparent 22rem); }
+.forest-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .13; background-image: radial-gradient(ellipse at 20% 20%, transparent 0 35%, rgba(255,255,255,.4) 36% 36.5%, transparent 37%), radial-gradient(ellipse at 80% 70%, transparent 0 35%, rgba(255,255,255,.35) 36% 36.5%, transparent 37%); background-size: 52px 76px; mask-image: linear-gradient(90deg, transparent, black); }
+.auth-art { background: linear-gradient(145deg, rgba(25,53,39,.96), rgba(49,91,69,.9)), radial-gradient(ellipse at 82% 18%, rgba(213,184,124,.45), transparent 18rem); }
+.auth-art::before { content: ""; position: absolute; width: 20rem; height: 20rem; right: -5rem; bottom: -7rem; border: 1px solid rgba(255,255,255,.16); border-radius: 44% 56% 61% 39% / 42% 45% 55% 58%; box-shadow: 0 0 0 2rem rgba(255,255,255,.035), 0 0 0 4rem rgba(255,255,255,.025); transform: rotate(-24deg); }
